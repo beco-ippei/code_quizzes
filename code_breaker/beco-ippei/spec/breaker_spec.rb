@@ -20,5 +20,11 @@ describe Breaker do
       it { expect(breaker.try 1243).to eq '++-' }
       it { expect(breaker.try 2311).to eq '----' }
     end
+
+    context 'code is 4745' do
+      let(:code) { 4745 }
+      it { expect(breaker.try 4745).to eq '++++' }
+      it { expect(breaker.try 4444).to eq '++' }
+    end
   end
 end
