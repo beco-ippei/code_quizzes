@@ -20,7 +20,7 @@ private
 
   def duplicated(codes, try_nums)
     try_nums.select do |e|
-      codes.include?(e) && codes.delete(e)
+      (idx = codes.find_index e) && codes.delete_at(idx)
     end
   end
 end
