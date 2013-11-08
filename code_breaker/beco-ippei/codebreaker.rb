@@ -1,6 +1,7 @@
 require './lib/breaker'
 
-breaker = Breaker.new 4.times.map {|e| rand 10 }
+ans = 4.times.map {|e| rand 10 }.join
+breaker = Breaker.new(ans)
 puts <<MSG
   Welcom to codebreaker !
   please input 4 numbers for try to break code.
@@ -24,7 +25,11 @@ loop do
   if input == ''
     puts '' && next
   elsif %w[exit quit].include? input
-    puts 'bye.' && exit
+    puts 'bye.'
+    exit
+  elsif input == 'giveup'
+    puts "  code was [#{ans}]  bye."
+    exit
   elsif /^\d{4}$/ !~ input
     puts 'wrong inputs. please input 4 numbers'
     next
@@ -33,14 +38,15 @@ loop do
   result = breaker.try input
 
   break if result == '++++'
-  puts "  result ... [#{result}]. try again !"
+  puts "        result ... [#{result}]. try again !"
 end
 
+require 'active_support/core_ext/integer/inflections'
 puts <<MSG
 
   congratulation !!
   you broke a code.
-  your answer [#{input}] is correct !
+  your #{i.ordinalize} answer [#{ans}] is correct !
 
 MSG
 
