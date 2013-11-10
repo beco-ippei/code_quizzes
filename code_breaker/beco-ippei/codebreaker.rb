@@ -1,4 +1,5 @@
 require './lib/breaker'
+require 'readline'
 
 ans = 4.times.map {|e| rand 10 }.join
 breaker = Breaker.new(ans)
@@ -18,13 +19,11 @@ MSG
 
 i = 0
 loop do
-  print "please input (#{i})> "
-  #TODO use readline
-  input = gets.chomp
+  input = Readline::readline "please input (#{i})> "
 
   if input == ''
     puts '' && next
-  elsif %w[exit quit].include? input
+  elsif ['exit', 'quit', nil].include? input
     puts 'bye.'
     exit
   elsif input == 'giveup'
@@ -36,6 +35,7 @@ loop do
   end
   i += 1
   result = breaker.try input
+  Readline::HISTORY.push input
 
   break if result == '++++'
   puts "        result ... [#{result}]. try again !"
