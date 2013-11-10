@@ -34,7 +34,7 @@ loop do
     next
   end
   i += 1
-  result = breaker.try input
+  result = breaker.try(input).join
   Readline::HISTORY.push input
 
   break if result == '++++'

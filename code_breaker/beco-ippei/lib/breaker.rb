@@ -9,9 +9,9 @@ class Breaker
     numbers = num.to_s.each_char.to_a
     matched = @codes.zip(numbers).map {|e| e[0] == e[1] ? nil : e }
 
-    ('+' * matched.select(&:nil?).size).tap do |r|
+    matched.select(&:nil?).map { '+' }.tap do |r|
       unless (unmatched = matched.reject(&:nil?)).empty?
-        r << '-' * duplicated(*unmatched.transpose).size
+        r.push *duplicated(*unmatched.transpose).map { '-' }
       end
     end
   end
