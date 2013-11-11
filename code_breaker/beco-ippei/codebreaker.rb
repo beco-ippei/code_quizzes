@@ -1,23 +1,24 @@
 require './lib/breaker'
 require 'readline'
+require 'colored'
 
-ans = 4.times.map {|e| rand 10 }.join
-breaker = Breaker.new(ans)
 puts <<MSG
   Welcom to codebreaker !
   please input 4 numbers for try to break code.
 
-  '+' is correct number and position.
-  '-' is correct number but not match position.
+  '#{?+.green}' is correct number and position.
+  '#{?-.yellow}' is correct number but position unmatch.
 
-  if code = '1234' and your input = '1256' ... result is '++'
-  if code = '1234' and your input = '1340' ... result is '+--'
+  if code='1234' and your input='1256' ... result is '#{'++'.green}'
+  if code='1234' and your input='1340' ... result is '#{?+.green}#{'--'.yellow}'
 
   good ruck !
 
 MSG
 
 i = 0
+ans = 4.times.map {|e| rand 10 }.join
+breaker = Breaker.new(ans)
 loop do
   input = Readline::readline "please input (#{i})> "
 
@@ -34,11 +35,12 @@ loop do
     next
   end
   i += 1
-  result = breaker.try(input).join
+  result = breaker.try input
   Readline::HISTORY.push input
 
-  break if result == '++++'
-  puts "        result ... [#{result}]. try again !"
+  break if result == [?+] * 4
+  result.map! {|e| e.send e == ?+ ? :green : :yellow }
+  puts "        result ... [#{result.join}]. try again !"
 end
 
 require 'active_support/core_ext/integer/inflections'
