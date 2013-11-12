@@ -4,19 +4,21 @@ $(function() {
     ws.send("msg:connected");
   };
   ws.onmessage = function(e) {
-    //TODO to json
-    res = e.data.split(":");
+    var data = JSON.parse(e.data);
+    var msg = data.msg;
+    var status = data.status;
 
-    if (res[0] == 'msg') {
-      $("#msg").html(res[1]);
-    } else if (res[0] == 'status') {
-      if (res[1] != '0') {
-        $("#msg").html("try again!");
+    if (msg) {
+      $("#status").html(msg);
+    } else if (status) {
+      if (status != '++++') {
+        $("#status").html("try again!").css("red");
       } else {
-        $("#msg").html("cleared !!!");
+        $("#status").html("cleared !!!").css("green");
       }
       $("#input").val("");
-      $("#history").append("<p>"+res[1]+"</p>");
+      $("#history").append("<div class='box'>"+
+        data.code+"<br>"+status+"</div>");
     }
   };
 
@@ -30,4 +32,6 @@ $(function() {
       ws.send('val:'+val);
     }
   });
+
+  $("#input").focus();
 });
