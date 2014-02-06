@@ -1,5 +1,5 @@
 $(function() {
-  ws = new WebSocket("ws://beco-ippei.net:3011/");
+  ws = new WebSocket("ws://socket.beco-ippei.net/");
   ws.onopen = function() {
     ws.send("msg:connected");
   };
@@ -10,7 +10,7 @@ $(function() {
 
     if (msg) {
       $("#status").html(msg);
-    } else if (status) {
+    } else if (status != null) {
       if (status != '++++') {
         $("#status").html("try again!").css("red");
       } else {

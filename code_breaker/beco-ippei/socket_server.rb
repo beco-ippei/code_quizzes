@@ -19,6 +19,7 @@ EventMachine::WebSocket.start(host: '0.0.0.0', port: 3011) do |ws|
     when 'msg'
       # do nothing
     when 'val'
+      puts "try breake [#{val[1]}]"
       result = $breakers[ws.__id__].try val[1]
       ws.send({
         status: result.join,
